@@ -1,0 +1,141 @@
+# Knowledge base of rental-scam patterns used by the scam-pattern RAG agent.
+#
+# Each pattern has:
+#   severity    how strongly the pattern alone suggests fraud (0-1)
+#   indicators  regular expressions for high-precision matches
+#   examples    example phrasings, indexed with BM25 to catch paraphrases the regexes miss
+#   sources     where the pattern is documented (shown to the user as citations)
+#
+# Maintenance: re-check sources and add new patterns as advisories change. The `reviewed`
+# date is shown as "data as of" on every verdict.
+reviewed: "2026-10-21"
+sources:
+  cafc: &cafc "https://antifraudcentre-centreantifraude.ca/"
+  livrent_flags: &livrent_flags "https://liv.rent/guides/renters/safety-and-scams/rental-scam-red-flags-every-renter-should-know"
+  livrent_fake: &livrent_fake "https://liv.rent/guides/renters/safety-and-scams/what-to-do-if-you-think-a-rental-listing-is-fake"
+  storeys: &storeys "https://storeys.com/rental-scams-on-the-rise-across-canada/"
+
+patterns:
+  - id: deposit_before_viewing
+    title: Payment requested before a viewing or signed lease
+    severity: 0.60
+    explanation: Legitimate landlords collect deposits after a viewing and a signed lease. Asking for money to "hold" a unit you have not seen is the most common rental-scam move.
+    indicators:
+      - '\b(?:deposit|first month|payment|money|funds)\b[^.\n]{0,60}\b(?:before|prior to|in order to|to)\b[^.\n]{0,25}\b(?:view|viewing|see|showing|tour|reserve|hold|secure|lock)\b'
+      - '\b(?:hold|reserve|secure|lock in)\b[^.\n]{0,30}\b(?:the\s+)?(?:unit|apartment|place|suite|room|house)\b[^.\n]{0,40}\b(?:deposit|e-?transfer|payment|send)\b'
+      - '\b(?:send|transfer|pay)\b[^.\n]{0,40}\b(?:deposit|first month)\b[^.\n]{0,40}\b(?:then|and then|after which|once received)\b[^.\n]{0,40}\b(?:keys?|viewing|show)\b'
+    exclude:
+      - '\bafter\b[^.\n]{0,30}\b(?:view|viewing|showing|tour|lease|signing|signed)\b'
+      - '\b(?:at|upon|on)\s+(?:lease\s+)?signing\b'
+    examples:
+      - send the deposit first and then I will arrange the viewing
+      - a deposit is required to reserve the apartment before anyone can see it
+      - pay first month to hold the unit and I will mail you the keys
+      - transfer the security deposit to lock in the place before the showing
+    sources: [*livrent_flags, *cafc]
+
+  - id: landlord_unavailable
+    title: Landlord is abroad or otherwise unable to meet
+    severity: 0.45
+    explanation: Scammers often claim to be overseas, on a mission, deployed or relocated for work, so they never have to meet you or show the unit.
+    indicators:
+      - '\b(?:i am|i''m|we are|we''re|currently|presently|now)\b[^.\n]{0,30}\b(?:out of (?:the )?(?:country|province|town)|overseas|abroad|on (?:a )?mission|deployed|working offshore|living in (?:the )?(?:us|usa|uk|europe|africa|asia))\b'
+      - '\b(?:relocated|transferred|moved)\b[^.\n]{0,40}\b(?:for work|job|company)\b[^.\n]{0,60}\b(?:can(?:no|''|)t|unable|not able)\b[^.\n]{0,30}\b(?:show|meet|view)\b'
+    examples:
+      - I am currently out of the country for work so I cannot show the apartment
+      - my husband and I moved overseas on a mission and are looking for a trustworthy tenant
+      - I am a doctor working abroad and the keys are with me
+      - we relocated to another country and are unable to meet in person
+    sources: [*livrent_flags, *storeys]
+
+  - id: no_viewing_keys_shipped
+    title: No viewing possible; keys delivered by courier or a third party
+    severity: 0.50
+    explanation: If you cannot see the unit before paying, you cannot confirm it exists or that the person owns it.
+    indicators:
+      - '\b(?:keys?|access code|lockbox code)\b[^.\n]{0,50}\b(?:mail(?:ed)?|courier(?:ed)?|ship(?:ped)?|deliver(?:ed)?|sent)\b'
+      - '\b(?:mail|courier|ship|post|fedex|ups)\b[^.\n]{0,20}\b(?:the |you the |over the )?keys?\b'
+      - '\b(?:no|not|can(?:no|''|)t|unable to)\s+(?:do\s+)?(?:viewings?|showings?|tours?)\b'
+      - '\b(?:drive|walk) by\b[^.\n]{0,40}\b(?:but|however)\b[^.\n]{0,40}\b(?:not|can(?:no|''|)t)\b[^.\n]{0,20}\b(?:go in|enter|inside)\b'
+    examples:
+      - the keys will be delivered to you by courier once payment is received
+      - viewings are not possible at the moment but you can drive by the outside
+      - an agency will release the keys to you after the deposit clears
+      - no showings due to my schedule, the photos show everything
+    sources: [*livrent_fake, *cafc]
+
+  - id: irreversible_payment
+    title: Untraceable or irreversible payment method
+    severity: 0.50
+    explanation: Wire transfers, gift cards, cryptocurrency and money-transfer services are hard to reverse, which is why scammers prefer them.
+    indicators:
+      - '\b(?:western union|moneygram|wire transfer|bank wire|gift cards?|itunes cards?|bitcoin|crypto(?:currency)?|usdt|ethereum|zelle|cash app|bitcoin atm)\b'
+    examples:
+      - payment only through Western Union or a wire transfer
+      - you can pay the deposit with gift cards or bitcoin
+      - I only accept cryptocurrency for the security deposit
+    sources: [*cafc, *livrent_flags]
+
+  - id: etransfer_pressure
+    title: E-transfer requested up front to an individual
+    severity: 0.20
+    explanation: E-transfer is normal for paying rent in Canada after a lease is signed. It is a warning sign only when demanded up front or as the only option before any paperwork.
+    indicators:
+      - '\be-?\s?transfers?\b[^.\n]{0,40}\b(?:only|right away|immediately|today|now|asap|upfront|up front|before)\b'
+      - '\b(?:only|right away|immediately|today|now|asap|upfront|up front|before)\b[^.\n]{0,20}\be-?\s?transfers?\b'
+    examples:
+      - e-transfer the deposit right away to my email
+      - etransfer only, send it today to confirm
+    sources: [*livrent_flags]
+
+  - id: off_platform_contact
+    title: Pushes contact off the listing platform
+    severity: 0.25
+    explanation: Moving the conversation to personal email, text or messaging apps removes the platform's protections and records.
+    indicators:
+      - '\b(?:text|whatsapp|telegram|signal|email|e-mail|contact)\s+(?:me\s+)?(?:only\s+)?(?:at|on|via|to)\b[^.\n]{0,40}(?:\d{3}[\s.-]?\d{3}[\s.-]?\d{4}|@[a-z0-9-]+\.[a-z]{2,}|\bgmail\b|\bhotmail\b|\boutlook\b|\byahoo\b)'
+      - '\b(?:do not|don''t|please don''t)\s+(?:message|reply|contact)\b[^.\n]{0,30}\b(?:here|on this site|through the site|on kijiji|on marketplace)\b'
+      - '\b(?:whatsapp|telegram)\b'
+    examples:
+      - don't reply here, email me directly at my gmail
+      - contact me only on WhatsApp for faster response
+      - text me at my number instead of using this site
+    sources: [*livrent_flags]
+
+  - id: urgency_pressure
+    title: Artificial urgency
+    severity: 0.30
+    explanation: Pressure to decide immediately stops renters from checking the listing or the landlord.
+    indicators:
+      - '\b(?:first (?:one|person|come)|first to (?:send|pay)|whoever (?:sends|pays) first)\b'
+      - '\b(?:many|lots of|several|tons of|dozens of)\s+(?:people|applicants|inquiries|requests|messages)\b[^.\n]{0,40}\b(?:interested|asking|waiting|contacted)\b'
+      - '\b(?:today only|act fast|won''t last|will go fast|going fast|decide (?:today|now|quickly)|within (?:the next )?\d+\s*(?:hours?|hrs?))\b'
+    examples:
+      - many people are interested so the first to send the deposit gets it
+      - this will go very fast, decide today
+      - I need an answer within 24 hours or I give it to the next person
+    sources: [*storeys, *livrent_flags]
+
+  - id: early_personal_info
+    title: Sensitive personal or banking details requested too early
+    severity: 0.40
+    explanation: Requests for a SIN, banking login, or ID photos before any viewing or application are used for identity theft.
+    indicators:
+      - '\b(?:sin|social insurance number|bank (?:login|password|card)|online banking|passport (?:copy|photo|scan)|copy of (?:your )?(?:id|passport|driver''?s licen[cs]e))\b'
+      - '\b(?:pay|fee|cost)\b[^.\n]{0,30}\b(?:credit check|background check|screening)\b[^.\n]{0,30}\b(?:link|website|site|before)\b'
+    examples:
+      - send a copy of your passport and SIN so I can process your application
+      - complete the credit check at this link and pay the fee before we talk
+    sources: [*cafc, *livrent_flags]
+
+  - id: too_good_to_be_true
+    title: Too-good-to-be-true offer with a justification
+    severity: 0.35
+    explanation: A price far below the market, explained by the landlord "just wanting a good tenant", is a classic lure.
+    indicators:
+      - '\b(?:not (?:about|interested in) (?:the )?money|money is not (?:the|an) issue|price is low because|just (?:want|looking for) (?:a )?(?:good|trustworthy|honest|reliable|responsible|caring) (?:tenant|person|family))\b'
+      - '\b(?:god[- ]fearing|honest and caring)\b'
+    examples:
+      - the rent is low because I only want someone who will take good care of my home
+      - money is not the issue for me I just want a trustworthy tenant
+    sources: [*storeys, *livrent_flags]

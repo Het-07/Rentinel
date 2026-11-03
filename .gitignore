@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+*.db
+.venv/
+.env
+# generated benchmark data (reproduce with eval/generate.py)
+eval/data/
+eval/heldout/
+
+.idea/

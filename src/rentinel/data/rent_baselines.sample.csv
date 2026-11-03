@@ -1,0 +1,16 @@
+# ILLUSTRATIVE VALUES ONLY - NOT OFFICIAL FIGURES. Used for development and the synthetic benchmark.
+# Replace with real data: download Statistics Canada table 46-10-0092-01 (Quarterly Rent Statistics,
+# average asking rent by CMA and unit type) and convert it to the columns below (importer: next milestone).
+cma,bedrooms,asking_rent,period,source
+Halifax,0,1600,illustrative,sample
+Halifax,1,1950,illustrative,sample
+Halifax,2,2450,illustrative,sample
+Halifax,3,2900,illustrative,sample
+Moncton,0,1250,illustrative,sample
+Moncton,1,1500,illustrative,sample
+Moncton,2,1850,illustrative,sample
+Moncton,3,2200,illustrative,sample
+Toronto,0,2100,illustrative,sample
+Toronto,1,2550,illustrative,sample
+Toronto,2,3300,illustrative,sample
+Toronto,3,3900,illustrative,sample

@@ -1,0 +1,146 @@
+{
+  "full": {
+    "precision": 1.0,
+    "recall": 0.91,
+    "f1": 0.9528795811518325,
+    "auroc": 0.9889375,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.012499999999999956,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 1.0,
+      "legit": 0.0,
+      "scam_adversarial": 0.9875,
+      "scam_subtle": 0.7571428571428571
+    },
+    "asr_by_attack": {
+      "combo": 0.0,
+      "hidden_html": 0.0,
+      "homoglyph": 0.0,
+      "visible": 0.05555555555555558,
+      "zero_width": 0.0
+    },
+    "latency_ms_p50": 9.60388350000585,
+    "latency_ms_p95": 13.835150999966572
+  },
+  "without firewall": {
+    "precision": 1.0,
+    "recall": 0.845,
+    "f1": 0.9159891598915989,
+    "auroc": 0.9775125,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.17500000000000004,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 1.0,
+      "legit": 0.0,
+      "scam_adversarial": 0.825,
+      "scam_subtle": 0.7571428571428571
+    },
+    "asr_by_attack": {
+      "combo": 0.2666666666666667,
+      "hidden_html": 0.2142857142857143,
+      "homoglyph": 0.0714285714285714,
+      "visible": 0.11111111111111116,
+      "zero_width": 0.21052631578947367
+    },
+    "latency_ms_p50": 8.890367999981663,
+    "latency_ms_p95": 12.700753000046916
+  },
+  "without scam_patterns": {
+    "precision": 1.0,
+    "recall": 0.815,
+    "f1": 0.8980716253443526,
+    "auroc": 0.9751375,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.012499999999999956,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 0.96,
+      "legit": 0.0,
+      "scam_adversarial": 0.9875,
+      "scam_subtle": 0.5142857142857142
+    },
+    "asr_by_attack": {
+      "combo": 0.0,
+      "hidden_html": 0.0,
+      "homoglyph": 0.0,
+      "visible": 0.05555555555555558,
+      "zero_width": 0.0
+    },
+    "latency_ms_p50": 8.563261999967153,
+    "latency_ms_p95": 14.020632999972804
+  },
+  "without price": {
+    "precision": 1.0,
+    "recall": 0.875,
+    "f1": 0.9333333333333333,
+    "auroc": 0.9584625,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.012499999999999956,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 1.0,
+      "legit": 0.0,
+      "scam_adversarial": 0.9875,
+      "scam_subtle": 0.6571428571428571
+    },
+    "asr_by_attack": {
+      "combo": 0.0,
+      "hidden_html": 0.0,
+      "homoglyph": 0.0,
+      "visible": 0.05555555555555558,
+      "zero_width": 0.0
+    },
+    "latency_ms_p50": 8.456934000008687,
+    "latency_ms_p95": 12.03178699995533
+  },
+  "without images": {
+    "precision": 1.0,
+    "recall": 0.815,
+    "f1": 0.8980716253443526,
+    "auroc": 0.9825,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.050000000000000044,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 1.0,
+      "legit": 0.0,
+      "scam_adversarial": 0.95,
+      "scam_subtle": 0.5285714285714286
+    },
+    "asr_by_attack": {
+      "combo": 0.1333333333333333,
+      "hidden_html": 0.0,
+      "homoglyph": 0.0714285714285714,
+      "visible": 0.05555555555555558,
+      "zero_width": 0.0
+    },
+    "latency_ms_p50": 2.5755569999716954,
+    "latency_ms_p95": 3.483749999986685
+  },
+  "without consistency": {
+    "precision": 1.0,
+    "recall": 0.9,
+    "f1": 0.9473684210526316,
+    "auroc": 0.985725,
+    "false_positive_rate": 0.0,
+    "attack_success_rate": 0.012499999999999956,
+    "flag_rate_by_category": {
+      "legit_hard": 0.0,
+      "scam_obvious": 1.0,
+      "legit": 0.0,
+      "scam_adversarial": 0.9875,
+      "scam_subtle": 0.7285714285714285
+    },
+    "asr_by_attack": {
+      "combo": 0.0,
+      "hidden_html": 0.0,
+      "homoglyph": 0.0,
+      "visible": 0.05555555555555558,
+      "zero_width": 0.0
+    },
+    "latency_ms_p50": 8.466534000007186,
+    "latency_ms_p95": 11.93466099999796
+  }
+}
