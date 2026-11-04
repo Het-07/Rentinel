@@ -5,7 +5,7 @@ hidden text and instructions aimed at AI, so scammers can't trick the checker it
 agents then examine the price, photos, wording and consistency of each listing, and combine their
 findings into one clear risk verdict.
 
-![Rentinel demo: a scam listing flagged as high risk, with the hidden AI instruction removed](docs/demo.png)
+![Rentinel demo: a scam listing flagged as high risk, with the hidden AI instruction removed](assets/scam.png)
 
 ## Why
 
