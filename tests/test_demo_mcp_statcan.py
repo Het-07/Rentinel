@@ -33,6 +33,7 @@ def test_mcp_tools_registered_and_working():
 def test_unit_type_and_geo_parsing():
     assert bedrooms_from_unit_type("Apartment - 1 bedroom") == 1
     assert bedrooms_from_unit_type("Bachelor") == 0
+    assert bedrooms_from_unit_type("Apartment - No bedroom") == 0
     assert bedrooms_from_unit_type("3 bedrooms +") == 3
     assert bedrooms_from_unit_type("Room") is None
     assert bedrooms_from_unit_type("Total, all unit types") is None

@@ -10,6 +10,7 @@ dimension, then UOM ... VALUE, STATUS, SYMBOL, TERMINATED, DECIMALS. This script
 unit-type dimension by its values, keeps the latest quarter per city and bedroom count, and prints
 anything it could not map so you can check it.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -28,7 +29,7 @@ def bedrooms_from_unit_type(text: str) -> int | None:
     t = text.lower()
     if "total" in t or "all " in t or re.search(r"\broom\b", t) and "bedroom" not in t:
         return None  # totals and single rooms in shared units are not comparable
-    if "bachelor" in t or "studio" in t:
+    if "bachelor" in t or "studio" in t or "no bedroom" in t:
         return 0
     m = re.search(r"(\d)\s*(?:\+|or more)?\s*-?\s*bedroom", t) or re.search(r"(one|two|three)\s*-?\s*bedroom", t)
     if not m:
@@ -39,7 +40,7 @@ def bedrooms_from_unit_type(text: str) -> int | None:
 
 def cma_from_geo(geo: str) -> str | None:
     if re.search(r"\bpart\b", geo, re.I) or geo.strip().lower() == "canada":
-        return None  # e.g. "Ottawa - Gatineau, Ontario part": skip the partial geographies
+        return None
     name = geo.split(",")[0]
     name = re.sub(r"\((?:CMA|CA)\)", "", name).strip()
     return name.split(" - ")[0].strip() or None
